@@ -1,5 +1,13 @@
+<!--这是项目的根组件-->
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
+  <!--导航栏-->
+  <div id="nav">
+    <router-link to="/">Home</router-link>
+  </div>
+  <router-view></router-view>
+  <!--copy right-->
+
+
   <HelloWorld msg="Welcome to Your Vue.js App"/>
 </template>
 
