@@ -1,27 +1,26 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 // 引入页面组件
-
-import HelloWorld from "@/components/HelloWorld"
+import HomePage from "@/components/HomePage";
+import UserCenter from "@/components/UserCenter";
+import VirtualScene from "@/components/VirtualScene";
+import Login from "@/components/Login";
+import Register from "@/components/Register";
 
 // 此处设置路由对应的页面
-const routes = [
-    // 主页
-    {
-        path: '/',
-        component: HelloWorld
-    }
-    // 注册
-
-    // 登录
-
-    // 用户后台
-
-    // 虚拟场景
-]
+const routes = [{
+    path: '/', component: HomePage
+}, {
+    path: '/User/Center', component: UserCenter
+}, {
+    path: '/User/Login', component: Login
+}, {
+    path: '/User/Register', component: Register
+}, {
+    path: '/VirtualScene', component: VirtualScene
+}]
 
 const router = createRouter({
-    history: createWebHashHistory(),
-    routes
+    history: createWebHashHistory(), routes
 })
 
 export default router

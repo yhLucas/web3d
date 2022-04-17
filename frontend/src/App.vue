@@ -1,34 +1,30 @@
 <!--这是项目的根组件-->
 <template>
-  <!--导航栏-->
-  <div id="nav">
-    <router-link to="/">Home</router-link>
+  <div class="common-layout">
+    <el-container>
+      <el-header id="header">
+        <HeadNavigator></HeadNavigator>
+      </el-header>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+    </el-container>
   </div>
-  <router-view></router-view>
-  <!--copy right-->
-
-
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HeadNavigator from "@/components/Navigator";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HeadNavigator,
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html, body, #header {
+  margin: 0;
+  padding: 0;
 }
 </style>
