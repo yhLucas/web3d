@@ -25,26 +25,68 @@
 <script>
 import {reactive, ref} from 'vue'
 
+function isEmail(email) {
+  const reg = /^[\w-]{3,12}@[\da-zA-Z]{2,6}\.[da-zA-Z]+$/
+  console.log(reg.test(email))
+  return reg.test(email)
+}
+
+function isPasswordLength(password) {
+  return password.length >= 6 && password.length <= 18
+}
+
+function isPasswordCharLegal(password) {
+  // TODO 检测字符是否都符合
+  const reg = /[0-9]/
+  return reg.test(password)
+}
+
+function isPasswordContainNumber(password) {
+  const reg = /[0-9]/
+  return reg.test(password)
+}
+
+function isPasswordContainUpperCase(password) {
+  const reg = /[A-Z]/
+  return reg.test(password)
+}
+
+function isPasswordContainLowerCase(password) {
+  const reg = /[a-z]/
+  return reg.test(password)
+}
+
 export default {
   name: "UserLogin",
   setup() {
     const formRef = ref()
     const validateEmail = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('Please input the email'))
+        callback(new Error('Please input the email, like "name@fudan.edu.cn"'))
+      } else if (!isEmail(value)) {
+        callback(new Error('Please input an email address'))
       }
       callback()
-      // TODO 验证格式
       // TODO 验证重复性（后端搭建后实现）
     }
     // 验证密码格式:6-18位，由数字、大写字母、小写字母组成，至少包含其中两种
     const validatePassword = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('Please input the password'))
+      } else if (!isPasswordLength(value)) {
+        callback(new Error('The password should be 6-18 in length'))
+      } else if (isPasswordCharLegal(value)) {
+        callback(new Error('The password should consist of uppercase, lowercase letters and numbers'))
+      } else {
+        // TODO 检测是否至少包含两种
+        let count = 0
+        if (isPasswordContainNumber(value)) count++
+        if (isPasswordContainUpperCase(value)) count++
+        if (isPasswordContainLowerCase(value)) count++
+        if (count < 2) {
+          callback(new Error('The password should not consist of only uppercase, lowercase letters or numbers'))
+        }
       }
-      // TODO 验证位数
-      // TODO 验证构成成分
-      // TODO 验证复杂性
       callback()
     }
     const validateConfirm = (rule, value, callback) => {
