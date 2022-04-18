@@ -11,8 +11,8 @@
     <el-menu-item index="/">Home</el-menu-item>
     <el-menu-item index="/User/Center">UserCenter</el-menu-item>
     <el-menu-item index="/VirtualScene">VirtualScene</el-menu-item>
-    <el-menu-item index="/User/Login">Login</el-menu-item>
-    <el-menu-item index="/User/Register">Register</el-menu-item>
+    <el-menu-item index="/User/Login" class="flex">Login</el-menu-item>
+    <el-menu-item index="/User/Register" class="flex">Register</el-menu-item>
     <current-user/>
   </el-menu>
 </template>
@@ -28,5 +28,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
