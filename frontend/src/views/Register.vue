@@ -1,25 +1,30 @@
 <template>
-  <el-form
-      ref="formRef"
-      :model="form"
-      status-icon
-      :rules="rules"
-      label-width="120px"
-  >
-    <el-form-item label="Email" prop="email">
-      <el-input v-model="form.email" type="email"></el-input>
-    </el-form-item>
-    <el-form-item label="Password" prop="password">
-      <el-input v-model="form.password" type="password" autocomplete="off"/>
-    </el-form-item>
-    <el-form-item label="Confirm" prop="checkPassword">
-      <el-input v-model="form.checkPassword" type="password" autocomplete="off"/>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submitForm(formRef)">Submit</el-button>
-      <el-button @click="resetForm(formRef)">Reset</el-button>
-    </el-form-item>
-  </el-form>
+  <el-row>
+    <el-col :span="8" :offset="8" class="el-card p-3">
+      <p class="text-title">Register Now</p>
+      <el-form
+          ref="formRef"
+          :model="form"
+          status-icon
+          :rules="rules"
+          label-width="120px"
+      >
+        <el-form-item label="Email" prop="email">
+          <el-input v-model="form.email" type="email"></el-input>
+        </el-form-item>
+        <el-form-item label="Password" prop="password">
+          <el-input v-model="form.password" type="password" autocomplete="off"/>
+        </el-form-item>
+        <el-form-item label="Confirm" prop="checkPassword">
+          <el-input v-model="form.checkPassword" type="password" autocomplete="off"/>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm(formRef)">Submit</el-button>
+          <el-button @click="resetForm(formRef)">Reset</el-button>
+        </el-form-item>
+      </el-form>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -116,7 +121,7 @@ export default {
       formEl.validate(async (valid) => {
         if (valid) {
           let loading = ElLoading.service({text: "Submitting..."})
-          await axios.post('api/token', {
+          await axios.post('api/account', {
             params: form
           }).then((res) => {
             loading.close()
@@ -137,7 +142,6 @@ export default {
     }
     return {
       formRef,
-      validatePassword, validateConfirm,
       form, rules,
       submitForm, resetForm
     }
@@ -146,5 +150,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
