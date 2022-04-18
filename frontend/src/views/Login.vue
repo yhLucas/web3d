@@ -4,7 +4,11 @@
 
 <script>
 export default {
-  name: "UserLogin"
+  name: "UserLogin",
+
+  mounted() {
+    // this.$loading({text:"sdf"})
+  }
 }
 </script>
 

@@ -13,13 +13,16 @@
     <el-menu-item index="/VirtualScene">VirtualScene</el-menu-item>
     <el-menu-item index="/User/Login">Login</el-menu-item>
     <el-menu-item index="/User/Register">Register</el-menu-item>
+    <current-user/>
   </el-menu>
 </template>
 
 <script>
+import CurrentUser from "@/components/CurrentUser";
+
 export default {
   name: "HeadNavigator",
-  components: {}
+  components: {CurrentUser}
 
 }
 </script>
