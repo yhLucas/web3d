@@ -24,6 +24,8 @@
 
 <script>
 import {reactive, ref} from 'vue'
+import axios from "axios";
+import {ElLoading} from "element-plus";
 
 function isEmail(email) {
   const reg = /^[\w-]{3,12}@[\da-zA-Z]{2,6}\.[da-zA-Z]+$/
@@ -113,9 +115,17 @@ export default {
 
     const submitForm = (formEl) => {
       if (!formEl) return
-      formEl.validate((valid) => {
+      formEl.validate(async (valid) => {
         if (valid) {
-          // 提交
+          let loading = ElLoading.service({text: "Submitting..."})
+          await axios.post('api/token', {
+            params: form
+          }).then((res) => {
+            loading.close()
+            console.log(res)
+          }).catch(()=>{
+            loading.close()
+          })
           return true
         } else {
           // 验证不通过，不提交
