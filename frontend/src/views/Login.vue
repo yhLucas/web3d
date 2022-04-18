@@ -27,6 +27,8 @@ import {reactive, ref} from 'vue'
 import axios from "axios";
 import {ElLoading} from "element-plus";
 
+
+// TODO 当前copy了注册 有待改为登录表单
 function isEmail(email) {
   const reg = /[-|a-z0-9A-Z._]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\.)+[a-z]{2,}$/
   console.log(reg.test(email))
