@@ -1,16 +1,14 @@
 <template>
-  <el-dropdown class="dropdown">
+  <el-dropdown class="dropdown" v-if="store.getToken()">
     <span class="el-dropdown-link current-user">
-      Username
+      {{ store.getUsername() }}
       <el-icon color="#ffffff">
         <arrow-down/>
       </el-icon>
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item>
-          修改密码
-        </el-dropdown-item>
+        <el-dropdown-item index="/User/Center">UserCenter</el-dropdown-item>
         <el-dropdown-item
             divided
             icon=""
@@ -23,12 +21,14 @@
 </template>
 
 <script>
+import {store} from "@/store";
 
 export default {
   name: "CurrentUser",
   data() {
     return {
-      user: '',
+      store,
+      user: 'default username',
     }
   },
   created() {
