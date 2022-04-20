@@ -8,7 +8,7 @@
     </span>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item index="/User/Center">UserCenter</el-dropdown-item>
+
         <el-dropdown-item
             divided
             icon=""
@@ -22,13 +22,13 @@
 
 <script>
 import {store} from "@/store";
+import router from "@/router";
 
 export default {
   name: "CurrentUser",
   data() {
     return {
       store,
-      user: 'default username',
     }
   },
   computed: {},
@@ -36,11 +36,10 @@ export default {
     logout() {
       console.log('logout')
       store.commit('logout')
-      this.$router.replace({
+      router.replace({
         name: 'Home',
-        query: {redirect: window.location.pathname}
       })
-    }
+    },
   }
 }
 </script>

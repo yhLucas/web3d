@@ -28,11 +28,11 @@
 import {reactive, ref} from 'vue'
 import axios from "axios";
 import {ElLoading} from "element-plus";
-
+import {store} from "@/store";
+import router from "@/router";
 
 function isEmail(email) {
   const reg = /[-|a-z0-9A-Z._]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\.)+[a-z]{2,}$/
-  console.log(reg.test(email))
   return reg.test(email)
 }
 
@@ -48,32 +48,40 @@ export default {
       }
       callback()
     }
-
     const form = reactive({
       email: '',
       password: '',
     })
-
     const rules = reactive({
       email: [{validator: validateEmail, trigger: 'blur'}],
     })
-
     const submitForm = (formEl) => {
       if (!formEl) return
       formEl.validate(async (valid) => {
         if (valid) {
           let loading = ElLoading.service({text: "Submitting..."})
+          // 调用登录接口
           await axios.post('api/token', {
             params: form
           }).then((res) => {
+            // 提交成功转到此处
             loading.close()
             console.log(res)
+            console.log("in then")
           }).catch(() => {
+            // 本地测试模拟登录成功
+            store.commit('login', {
+              username: "test account",
+              token: 123
+            })
+            router.replace({
+              name: 'UserCenter',
+            })
             loading.close()
           })
           return true
         } else {
-          // 验证不通过，不提交
+          // 表单验证失败，不提交
           return false
         }
       })

@@ -31,6 +31,7 @@
 import {reactive, ref} from 'vue'
 import axios from "axios";
 import {ElLoading} from "element-plus";
+import router from "@/router";
 
 function isEmail(email) {
   const reg = /[-|a-z0-9A-Z._]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\.)+[a-z]{2,}$/
@@ -124,8 +125,11 @@ export default {
           await axios.post('api/account', {
             params: form
           }).then((res) => {
-            loading.close()
             console.log(res)
+            router.replace({
+              name: 'Login',
+            })
+            loading.close()
           }).catch(() => {
             loading.close()
           })
