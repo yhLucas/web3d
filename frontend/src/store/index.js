@@ -1,27 +1,34 @@
-import {reactive} from "vue";
+import {createStore} from 'vuex'
+import createPersistedState from "vuex-persistedstate"
 
-export const store = reactive({
-    logged: false,
-    user: {
-        username: 'none',
-        token: 0
+export const store = createStore({
+    state: {
+        // 存储数据
+        username: "yicongyuan",
+        token: 123
     },
-
-    logIn(username, token) {
-        this.logged = true
-        this.user.username = username
-        this.user.token = token
+    getters: {
+        // 获取函数
+        isLogged: (state) => {
+            return state.username != null
+        },
+        getUsername: (state) => {
+            return state.username
+        },
+        getToken: (state) => {
+            return state.token
+        }
     },
-
-    isLogged() {
-        return this.logged
+    mutations: {
+        // 更改状态的函数
+        login(state, user) {
+            state.username = user.username
+            state.token = user.token
+        },
+        logout(state) {
+            state.username = null
+            state.token = null
+        }
     },
-
-    getToken() {
-        return this.user.token
-    },
-
-    getUsername() {
-        return this.user.username
-    }
+    plugins: [createPersistedState()]
 })

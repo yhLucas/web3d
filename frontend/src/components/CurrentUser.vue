@@ -1,7 +1,7 @@
 <template>
-  <el-dropdown class="dropdown" v-if="store.getToken()">
+  <el-dropdown class="dropdown" v-if="store.getters.isLogged">
     <span class="el-dropdown-link current-user">
-      {{ store.getUsername() }}
+      {{ store.getters.getUsername }}
       <el-icon color="#ffffff">
         <arrow-down/>
       </el-icon>
@@ -13,7 +13,7 @@
             divided
             icon=""
             @click="logout">
-          登出
+          Logout
         </el-dropdown-item>
       </el-dropdown-menu>
     </template>
@@ -31,15 +31,13 @@ export default {
       user: 'default username',
     }
   },
-  created() {
-    // this.user = this.$getUser()
-  },
+  computed: {},
   methods: {
     logout() {
       console.log('logout')
-      window.localStorage.removeItem('user')
+      store.commit('logout')
       this.$router.replace({
-        name: 'Login',
+        name: 'Home',
         query: {redirect: window.location.pathname}
       })
     }
