@@ -19,6 +19,9 @@
           <el-button type="primary" @click="submitForm(formRef)">Submit</el-button>
           <el-button @click="resetForm(formRef)">Reset</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-link type="primary" href="/User/Register">注册账号</el-link>
+        </el-form-item>
       </el-form>
     </el-col>
   </el-row>
@@ -27,7 +30,7 @@
 <script>
 import {reactive, ref} from 'vue'
 import axios from "axios";
-import {ElLoading} from "element-plus";
+import {ElLoading, ElMessage} from "element-plus";
 import {store} from "@/store";
 import router from "@/router";
 
@@ -56,6 +59,7 @@ export default {
       email: [{validator: validateEmail, trigger: 'blur'}],
     })
     const submitForm = (formEl) => {
+      console.log(formEl)
       if (!formEl) return
       formEl.validate(async (valid) => {
         if (valid) {
@@ -81,7 +85,7 @@ export default {
           })
           return true
         } else {
-          // 表单验证失败，不提交
+          ElMessage.error("表单提交失败")
           return false
         }
       })

@@ -1,4 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import {store} from "@/store";
+import {ElMessage} from "element-plus";
 // import {getUser} from "@/serivices/security";
 // 引入页面组件
 
@@ -35,13 +37,14 @@ const router = createRouter({
     history: createWebHistory(), routes
 })
 
-// router.beforeEach((to, from, next) => {
-//     const currentUser = getUser()
-//     if (to.name !== 'Login' && !currentUser) {
-//         next({name: 'Login', query: {redirect: window.location.pathname}})
-//     } else {
-//         next()
-//     }
-// })
+router.beforeEach((to, from, next) => {
+    const currentUser = store.getters.getToken
+    if ((to.name !== 'Login' && to.name !== 'Register') && !currentUser) {
+        next({name: 'Login', query: {redirect: window.location.pathname}})
+        ElMessage.warning("请登录账号")
+    } else {
+        next()
+    }
+})
 
 export default router

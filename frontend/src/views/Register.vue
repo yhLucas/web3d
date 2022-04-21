@@ -30,7 +30,7 @@
 <script>
 import {reactive, ref} from 'vue'
 import axios from "axios";
-import {ElLoading} from "element-plus";
+import {ElLoading, ElMessage} from "element-plus";
 import router from "@/router";
 
 function isEmail(email) {
@@ -132,10 +132,15 @@ export default {
             loading.close()
           }).catch(() => {
             loading.close()
+
+            router.replace({
+              name: 'Login',
+            })
+
           })
           return true
         } else {
-          // 验证不通过，不提交
+          ElMessage.error("表单提交失败")
           return false
         }
       })
