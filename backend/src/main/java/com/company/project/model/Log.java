@@ -15,6 +15,12 @@ public class Log {
 
     private Date time;
 
+    public Log(Integer userId,String scene){
+        this.userId = userId;
+        this.scene = scene;
+        this.time = new Date(System.currentTimeMillis());
+    }
+
     /**
      * @return log_id
      */

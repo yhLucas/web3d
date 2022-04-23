@@ -1,7 +1,10 @@
 package com.company.project.service.impl;
 
+import com.company.project.core.Result;
+import com.company.project.core.ResultGenerator;
 import com.company.project.dao.LogMapper;
 import com.company.project.model.Log;
+import com.company.project.model.User;
 import com.company.project.service.LogService;
 import com.company.project.core.AbstractService;
 import org.springframework.stereotype.Service;
@@ -21,8 +24,11 @@ public class LogServiceImpl extends AbstractService<Log> implements LogService {
     private LogMapper logMapper;
 
     @Override
-    public void save(Log log){
+    public Result save(Integer token, String scene){
+        User user = UserServiceImpl.getUser(token);
+        Log log = new Log(user.getUserId(),scene);
         logMapper.insert(log);
+        return ResultGenerator.genSuccessResult();
     }
 
     @Override

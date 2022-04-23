@@ -1,14 +1,19 @@
 package com.company.project.service.impl;
 
+import com.company.project.core.Result;
+import com.company.project.core.ResultGenerator;
 import com.company.project.dao.UserMapper;
 import com.company.project.model.Log;
 import com.company.project.model.User;
 import com.company.project.service.UserService;
 import com.company.project.core.AbstractService;
+import com.company.project.util.PasswordEncode;
+import com.company.project.util.Token;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -20,6 +25,36 @@ import java.util.List;
 public class UserServiceImpl extends AbstractService<User> implements UserService {
     @Resource
     private UserMapper userMapper;
+
+    private static HashMap<Integer,User> map = new HashMap<Integer, User>();
+    private static Integer count = 1;
+
+    public Result login(String email,String password){
+        User user = findBy("email",email);
+        if(user==null){
+            return ResultGenerator.genFailResult("用户未注册");
+        }
+        if(!PasswordEncode.isPasswordEnable(password,user.getPassword())){
+            return ResultGenerator.genFailResult("密码错误");
+        }
+        map.put(count,user);
+        return ResultGenerator.genSuccessResult(new Token(count++));
+    }
+
+    public Result logout(Integer token){
+        try{
+            map.remove(token);
+            return ResultGenerator.genSuccessResult();
+        }catch(Exception e){
+            return ResultGenerator.genFailResult("登出失败");
+        }
+
+    }
+
+    public static User getUser(Integer token){
+        return map.get(token);
+    }
+
 
     @Override
     public void save(User user){
