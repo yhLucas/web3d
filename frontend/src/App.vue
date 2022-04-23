@@ -33,6 +33,23 @@ html, body, #header {
   font-size: 24px;
 }
 
+.text-normal {
+  text-align: center;
+  font-size: 16px;
+}
+
+.subtext-title {
+  text-align: left;
+  font-size: 20px;
+  padding-left: 12px;
+}
+
+.subtext-normal {
+  text-align: left;
+  font-size: 14px;
+  padding-left: 24px;
+}
+
 .p-2 {
   padding: 4px;
 }
