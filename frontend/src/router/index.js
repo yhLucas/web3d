@@ -38,7 +38,7 @@ const router = createRouter({
 })
 
 // 无需登录的路由组件名
-const publicRoutes = ['Login', 'Register']
+const publicRoutes = ['Home', 'Login', 'Register']
 
 function needLogged(name) {
     // 如果不在public组件中，说明需要登录
