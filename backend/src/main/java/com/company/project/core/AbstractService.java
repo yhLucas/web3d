@@ -61,9 +61,6 @@ public abstract class AbstractService<T> implements Service<T> {
         }
     }
 
-
-
-
     public List<T> findByIds(String ids) {
         return mapper.selectByIds(ids);
     }

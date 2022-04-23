@@ -3,12 +3,11 @@ package com.company.project.service.impl;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.dao.UserMapper;
-import com.company.project.model.Log;
+import com.company.project.util.Token;
 import com.company.project.model.User;
 import com.company.project.service.UserService;
 import com.company.project.core.AbstractService;
 import com.company.project.util.PasswordEncode;
-import com.company.project.util.Token;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

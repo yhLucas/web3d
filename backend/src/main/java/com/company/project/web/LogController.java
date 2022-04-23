@@ -32,7 +32,7 @@ public class LogController {
         int uid = UserServiceImpl.getUser(token).getUserId();
 
         Condition condition = new Condition(Log.class);
-        condition.createCriteria().andCondition("user_id="+uid);
+        condition.createCriteria().andCondition("user_id",uid);
         List<Log> list = logService.findByCondition(condition);
 
         return ResultGenerator.genSuccessResult(list);

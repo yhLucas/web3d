@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Random;
+import com.company.project.core.ServiceException;
 
 /**
 * Created by CodeGenerator on 2022/04/19.
@@ -22,7 +22,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @GetMapping("account")
+    @GetMapping("/account")
     public Result checkRepeat(@RequestParam String email){
         User user = userService.findBy("email",email);
         if(user!=null) {
@@ -38,8 +38,13 @@ public class UserController {
         User user = new User();
         user.setEmail(email);
         user.setPassword(PasswordEncode.digestPassword(password));
-        userService.save(user);
-        return ResultGenerator.genSuccessResult();
+        try {
+            userService.save(user);
+            return ResultGenerator.genSuccessResult();
+        }catch(Exception e){
+            throw new ServiceException("该邮箱已被注册，注册失败");
+        }
+
     }
 
     @PostMapping("/token")
