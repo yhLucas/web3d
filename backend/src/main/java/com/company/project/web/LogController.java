@@ -3,12 +3,11 @@ import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.model.Log;
 import com.company.project.service.LogService;
+import com.company.project.service.impl.UserServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -17,16 +16,28 @@ import java.util.List;
 * Created by CodeGenerator on 2022/04/19.
 */
 @RestController
-@RequestMapping("/log")
+@RequestMapping("/api/scene")
 public class LogController {
     @Resource
     private LogService logService;
 
-    @PostMapping("/add")
-    public Result add(Log log) {
-        logService.save(log);
-        return ResultGenerator.genSuccessResult();
+    @PostMapping("/history")
+    public Result add(@RequestParam Integer token,
+                      @RequestParam String scene) {
+        return logService.save(token,scene);
     }
+
+    @GetMapping("/history")
+    public Result getLogs(@RequestParam Integer token){
+        int uid = UserServiceImpl.getUser(token).getUserId();
+
+        Condition condition = new Condition(Log.class);
+        condition.createCriteria().andCondition("user_id="+uid);
+        List<Log> list = logService.findByCondition(condition);
+
+        return ResultGenerator.genSuccessResult(list);
+    }
+
 
     @PostMapping("/delete")
     public Result delete(@RequestParam Integer id) {
