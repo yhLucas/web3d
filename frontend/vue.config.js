@@ -6,7 +6,7 @@ module.exports = defineConfig({
         proxy: {
             // 对api前缀请求到
             '/api': {
-                target: 'http://localhost:8080/',
+                target: 'http://47.101.188.143:8082/',
                 changeOrigin: true,
             }
             ,
