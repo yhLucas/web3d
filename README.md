@@ -110,7 +110,7 @@
 
 ##### 查看邮箱重复性
 
-`${ip}:${port}/api/account` `GET`
+`${ip}:${port}/api/user/account` `GET`
 
 输入参数
 
@@ -126,7 +126,7 @@
 
 ##### 注册
 
-`${ip}:${port}/api/account` `POST`
+`${ip}:${port}/api/user/account` `POST`
 
 输入参数
 
@@ -137,7 +137,7 @@
 
 ##### 登录
 
-`${ip}:${port}/api/token` `POST`
+`${ip}:${port}/api/user/token` `POST`
 
 输入参数
 
@@ -154,7 +154,7 @@
 
 ##### 登出
 
-`${ip}:${port}/api/token` `DELETE`
+`${ip}:${port}/api/user/token` `DELETE`
 
 输入参数
 
