@@ -35,7 +35,6 @@ import router from "@/router";
 
 function isEmail(email) {
   const reg = /[-|a-z0-9A-Z._]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\.)+[a-z]{2,}$/
-  console.log(reg.test(email))
   return reg.test(email)
 }
 
@@ -121,25 +120,25 @@ export default {
       if (!formEl) return
       formEl.validate(async (valid) => {
         if (valid) {
+          let data = new FormData()
+          data.append('email', form.email)
+          data.append('password', form.password)
           let loading = ElLoading.service({text: "Submitting..."})
-          await axios.post('api/account', {
-            params: form
-          }).then((res) => {
-            console.log(res)
-            router.replace({
-              name: 'Login',
-            })
+          await axios.post('/api/user/account', data).then((res) => {
+            let data = res.data
+            if (data.code === 200) {
+              // 注册成功
+              ElMessage.success("Registration Successful")
+              router.replace({name: 'Login'})
+            }
             loading.close()
           }).catch(() => {
+            ElMessage.error("Please try again")
             loading.close()
-            router.replace({
-              name: 'Login',
-            })
-
           })
           return true
         } else {
-          ElMessage.error("表单提交失败")
+          ElMessage.error("Please try again")
           return false
         }
       })
