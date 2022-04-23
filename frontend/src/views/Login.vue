@@ -59,33 +59,32 @@ export default {
       email: [{validator: validateEmail, trigger: 'blur'}],
     })
     const submitForm = (formEl) => {
-      console.log(formEl)
       if (!formEl) return
       formEl.validate(async (valid) => {
         if (valid) {
+          let data = new FormData()
+          data.append('email', form.email)
+          data.append('password', form.password)
           let loading = ElLoading.service({text: "Submitting..."})
           // 调用登录接口
-          await axios.post('api/token', {
-            params: form
-          }).then((res) => {
+          await axios.post('/api/user/token', data).then((res) => {
             // 提交成功转到此处
+            let data = res.data
+            console.log(data)
+            if (data.code === 200) {
+              // 登录成功
+              store.commit('login', {username: data.username, token: data.token})
+              ElMessage.success("Logged In")
+              router.replace({name: 'UserCenter'})
+            }
             loading.close()
-            console.log(res)
-            console.log("in then")
           }).catch(() => {
-            // 本地测试模拟登录成功
-            store.commit('login', {
-              username: "test account",
-              token: 123
-            })
-            router.replace({
-              name: 'UserCenter',
-            })
+            ElMessage.error("Please try again")
             loading.close()
           })
           return true
         } else {
-          ElMessage.error("表单提交失败")
+          ElMessage.error("Please try again")
           return false
         }
       })

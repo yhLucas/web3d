@@ -22,6 +22,7 @@ export const store = createStore({
     mutations: {
         // 更改状态的函数
         login(state, user) {
+            console.log(user)
             state.username = user.username
             state.token = user.token
         },
