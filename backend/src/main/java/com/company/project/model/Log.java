@@ -15,6 +15,9 @@ public class Log {
 
     private Date time;
 
+    public Log(){
+
+    }
     public Log(Integer userId,String scene){
         this.userId = userId;
         this.scene = scene;

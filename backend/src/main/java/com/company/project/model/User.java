@@ -11,6 +11,10 @@ public class User {
 
     private String password;
 
+
+    public User(){
+
+    }
     /**
      * @return user_id
      */
