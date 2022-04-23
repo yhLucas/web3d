@@ -4,8 +4,8 @@ import createPersistedState from "vuex-persistedstate"
 export const store = createStore({
     state: {
         // 存储数据
-        username: "yicongyuan",
-        token: 123
+        username: null,
+        token: null
     },
     getters: {
         // 获取函数

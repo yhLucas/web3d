@@ -66,14 +66,29 @@ export default {
   name: "UserRegister",
   setup() {
     const formRef = ref()
-    const validateEmail = (rule, value, callback) => {
+    const validateEmail = async (rule, value, callback) => {
       if (value === '') {
         callback(new Error('Please input the email'))
       } else if (!isEmail(value)) {
         callback(new Error('Please input a valid email, reference:"name@fudan.edu.cn"'))
       }
-      callback()
-      // TODO 验证重复性（后端搭建后实现）
+      await axios.get('/api/user/account', {
+        params: {
+          email: form.email
+        }
+      }).then((res) => {
+        console.log(res)
+        let data = res.data
+        if (data.code === 200) {
+          // 查询成功
+          if (data.data === null) {
+            // 无重复
+            callback()
+          } else {
+            callback(new Error('Email already registered'))
+          }
+        }
+      })
     }
     // 验证密码格式:6-18位，由数字、大写字母、小写字母组成，至少包含其中两种
     const validatePassword = (rule, value, callback) => {

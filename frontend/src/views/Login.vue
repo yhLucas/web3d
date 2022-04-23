@@ -70,10 +70,9 @@ export default {
           await axios.post('/api/user/token', data).then((res) => {
             // 提交成功转到此处
             let data = res.data
-            console.log(data)
             if (data.code === 200) {
               // 登录成功
-              store.commit('login', {username: data.username, token: data.token})
+              store.commit('login', {username: form.email, token: data.token})
               ElMessage.success("Logged In")
               router.replace({name: 'UserCenter'})
             }
