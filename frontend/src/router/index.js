@@ -9,27 +9,32 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: () => import('@/views/HomePage')
+        component: () => import('@/views/HomePage'),
+        meta: {requiresAuth: false}
     },
     {
         path: '/User/Center',
         name: 'UserCenter',
-        component: () => import('@/views/UserCenter')
+        component: () => import('@/views/UserCenter'),
+        meta: {requiresAuth: true}
     },
     {
         path: '/User/Login',
         name: 'Login',
-        component: () => import('@/views/Login')
+        component: () => import('@/views/Login'),
+        meta: {requiresAuth: false}
     },
     {
         path: '/User/Register',
         name: 'Register',
-        component: () => import('@/views/Register')
+        component: () => import('@/views/Register'),
+        meta: {requiresAuth: false}
     },
     {
         path: '/VirtualScene',
         name: 'VirtualScene',
-        component: () => import('@/views/VirtualScene')
+        component: () => import('@/views/VirtualScene'),
+        meta: {requiresAuth: true}
     }]
 
 
@@ -37,17 +42,9 @@ const router = createRouter({
     history: createWebHistory(), routes
 })
 
-// 无需登录的路由组件名
-const publicRoutes = ['Home', 'Login', 'Register']
-
-function needLogged(name) {
-    // 如果不在public组件中，说明需要登录
-    return publicRoutes.indexOf(name) === -1
-}
-
 router.beforeEach((to, from, next) => {
     // 如果需要登录但没登录
-    if (needLogged(to.name) && !store.getters.isLogged) {
+    if (to.meta.requiresAuth && !store.getters.isLogged) {
         next({name: 'Login', query: {redirect: window.location.pathname}})
         ElMessage.warning("Please login first")
     } else {
