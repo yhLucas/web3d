@@ -37,11 +37,19 @@ const router = createRouter({
     history: createWebHistory(), routes
 })
 
+// 无需登录的路由组件名
+const publicRoutes = ['Login', 'Register']
+
+function needLogged(name) {
+    // 如果不在public组件中，说明需要登录
+    return publicRoutes.indexOf(name) === -1
+}
+
 router.beforeEach((to, from, next) => {
-    const currentUser = store.getters.getToken
-    if ((to.name !== 'Login' && to.name !== 'Register') && !currentUser) {
+    // 如果需要登录但没登录
+    if (needLogged(to.name) && !store.getters.isLogged) {
         next({name: 'Login', query: {redirect: window.location.pathname}})
-        ElMessage.warning("请登录账号")
+        ElMessage.warning("Please login first")
     } else {
         next()
     }

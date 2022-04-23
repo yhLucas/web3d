@@ -132,7 +132,6 @@ export default {
             loading.close()
           }).catch(() => {
             loading.close()
-
             router.replace({
               name: 'Login',
             })
