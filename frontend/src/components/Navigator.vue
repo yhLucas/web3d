@@ -14,6 +14,7 @@
     <el-menu-item index="/User/Login" class="flex" v-if="!store.getters.isLogged">Login</el-menu-item>
     <el-menu-item index="/User/Register" class="flex" v-if="!store.getters.isLogged">Register</el-menu-item>
     <current-user/>
+    <button @click="store.commit('login',{username:'test',token:123})">测试登录</button>
   </el-menu>
 </template>
 
