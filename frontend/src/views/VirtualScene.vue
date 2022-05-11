@@ -5,12 +5,13 @@
 </template>
 <script>
 import * as THREE from 'three'
+// import {OrbitControls} from "three/examples/jsm/controls/OrbitControls"
+// import {FBXLoader} from "three/examples/jsm/loaders/FBXLoader.js"
 
 export default {
   mounted() {
     this.initThree()
   },
-
   methods: {
     initThree() {
       const canvas = document.querySelector('#container')
@@ -68,7 +69,7 @@ export default {
 
       animate()
     }
-  }
+  },
 }
 </script>
 <style scoped>

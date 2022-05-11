@@ -35,7 +35,7 @@ const routes = [
         name: 'VirtualScene',
         component: () => import('@/views/VirtualScene'),
         meta: {requiresAuth: true}
-    }]
+    },]
 
 
 const router = createRouter({
