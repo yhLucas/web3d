@@ -1,6 +1,6 @@
 <template>
-  <el-row>
-    <el-col :span="8" :offset="8" class="el-card p-3">
+  <el-container>
+    <el-card class="el-col-8 el-col-offset-8 el-col-xs-24 el-col-xs-offset-0">
       <p class="text-title">Login</p>
       <el-form
           ref="formRef"
@@ -23,8 +23,8 @@
           <el-link type="primary" href="/User/Register">注册账号</el-link>
         </el-form-item>
       </el-form>
-    </el-col>
-  </el-row>
+    </el-card>
+  </el-container>
 </template>
 
 <script>

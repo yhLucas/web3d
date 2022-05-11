@@ -1,6 +1,6 @@
 <template>
-  <el-row>
-    <el-col :span="8" :offset="8" class="el-card p-3">
+  <el-container>
+    <el-card class="el-col-8 el-col-offset-8 el-col-xs-24 el-col-xs-offset-0">
       <p class="text-title">Register Now</p>
       <el-form
           ref="formRef"
@@ -23,8 +23,8 @@
           <el-button @click="resetForm(formRef)">Reset</el-button>
         </el-form-item>
       </el-form>
-    </el-col>
-  </el-row>
+    </el-card>
+  </el-container>
 </template>
 
 <script>
