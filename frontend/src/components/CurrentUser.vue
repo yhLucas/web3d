@@ -2,7 +2,7 @@
   <el-dropdown class="dropdown" v-if="store.getters.isLogged">
     <span class="el-dropdown-link current-user">
       {{ store.getters.getUsername }}
-      <el-icon color="#ffffff">
+      <el-icon color="#000">
         <arrow-down/>
       </el-icon>
     </span>
@@ -52,7 +52,7 @@ export default {
 .current-user {
   display: flex;
   align-items: center;
-  color: white;
+  color: black;
   padding: 0 20px 0 20px;
   height: 58px;
   text-align: center;

@@ -1,24 +1,113 @@
 <!--这是项目的根组件-->
 <template>
-  <div class="common-layout">
+  <el-container style="min-height: 100%">
+    <el-aside style="width: auto">
+      <el-menu v-if="windowWidth>=500"
+               :default-active="this.$route.path"
+               class="el-menu-vertical-demo"
+               :collapse="isCollapse"
+               @open="handleOpen"
+               @close="handleClose"
+               router
+               style="height: 100%"
+      >
+        <el-menu-item>
+          <p>{{ isCollapse ? '3D' : 'Web 3D' }}</p>
+        </el-menu-item>
+        <el-menu-item index="/">
+          <el-icon>
+            <location/>
+          </el-icon>
+          <template #title>Home</template>
+        </el-menu-item>
+        <el-menu-item index="/User/Center" v-if="store.getters.isLogged">
+          <el-icon>
+            <document/>
+          </el-icon>
+          <template #title>UserCenter</template>
+        </el-menu-item>
+        <el-menu-item index="/VirtualScene" v-if="store.getters.isLogged">
+          <el-icon>
+            <document/>
+          </el-icon>
+          <template #title>VirtualScene</template>
+        </el-menu-item>
+        <el-menu-item index="/User/Login" class="flex" v-if="!store.getters.isLogged">
+          <el-icon>
+            <document/>
+          </el-icon>
+          <template #title>Login</template>
+        </el-menu-item>
+        <el-menu-item index="/User/Register" class="flex" v-if="!store.getters.isLogged">
+          <el-icon>
+            <document/>
+          </el-icon>
+          <template #title>Register</template>
+        </el-menu-item>
+      </el-menu>
+    </el-aside>
     <el-container>
-      <el-header id="header">
-        <HeadNavigator></HeadNavigator>
+      <el-header>
+        <el-menu
+            :default-active="this.$route.path"
+            class="el-menu-demo flex-col"
+            mode="horizontal"
+            background-color="#fff"
+            text-color="#545c64"
+            router
+        >
+          <el-radio-group v-if="windowWidth>=500" v-model="isCollapse" style="margin-bottom: 20px">
+            <el-radio-button :label="!isCollapse">expand</el-radio-button>
+          </el-radio-group>
+
+          <el-menu-item index="/" v-if="windowWidth<500">Home</el-menu-item>
+          <el-menu-item index="/VirtualScene" v-if="windowWidth<500&&store.getters.isLogged">VirtualScene</el-menu-item>
+          <el-menu-item index="/User/Center" v-if="windowWidth<500&&store.getters.isLogged">UserCenter</el-menu-item>
+          <el-menu-item index="/User/Login" class="flex" v-if="windowWidth<500&&!store.getters.isLogged">Login
+          </el-menu-item>
+          <el-menu-item index="/User/Register" class="flex" v-if="windowWidth<500&&!store.getters.isLogged">Register
+          </el-menu-item>
+          <current-user/>
+          <button @click="store.commit('login',{username:'test',token:123})">测试登录</button>
+        </el-menu>
       </el-header>
-      <el-main>
-        <router-view></router-view>
+      <el-main style="z-index: -1">
+        <router-view/>
       </el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
 <script>
-import HeadNavigator from "@/components/Navigator";
+import CurrentUser from "@/components/CurrentUser";
+import {store} from "@/store";
 
 export default {
   name: 'App',
-  components: {
-    HeadNavigator,
-  }
+  components: {CurrentUser},
+  data() {
+    return {
+      store,
+      isCollapse: true,
+      windowWidth: document.documentElement.clientWidth,
+    }
+  },
+  mounted() {
+    window.onresize = () => {
+      return (() => {
+        window.fullWidth = document.documentElement.clientWidth;
+        this.windowWidth = window.fullWidth;
+      })()
+    };
+  },
+
+  methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    }
+  },
 }
 </script>
 
@@ -26,6 +115,11 @@ export default {
 html, body, #header {
   margin: 0;
   padding: 0;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
 }
 
 .text-title {
@@ -64,5 +158,14 @@ html, body, #header {
 
 .m-3 {
   margin: 8px;
+}
+
+.flex {
+  margin-left: auto;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
 }
 </style>
