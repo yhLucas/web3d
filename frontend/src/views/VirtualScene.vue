@@ -100,7 +100,7 @@ export default {
 
       // Size
       const sizes = {
-        width: window.innerWidth,
+        width: window.innerWidth - 65,
         height: window.innerHeight
       }
       // Renderer
@@ -158,10 +158,10 @@ export default {
 </script>
 <style scoped>
 #container {
-  width: 100%;
+  width: 90%;
   height: 100%;
   position: fixed;
-  left: 0;
+  right: 0;
   top: 60px;
 }
 </style>

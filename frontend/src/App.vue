@@ -71,7 +71,7 @@
           <button @click="store.commit('login',{username:'test',token:123})">测试登录</button>
         </el-menu>
       </el-header>
-      <el-main style="z-index: -1">
+      <el-main>
         <router-view/>
       </el-main>
     </el-container>
