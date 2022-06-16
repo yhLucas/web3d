@@ -71,7 +71,7 @@
           <button @click="store.commit('login',{username:'test',token:123})">测试登录</button>
         </el-menu>
       </el-header>
-      <el-main>
+      <el-main id="container">
         <router-view v-slot="{Component}">
           <keep-alive>
             <component :is="Component"/>
@@ -166,6 +166,10 @@ html, body, #header {
 
 .flex {
   margin-left: auto;
+}
+
+#container{
+  padding: 0;
 }
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {

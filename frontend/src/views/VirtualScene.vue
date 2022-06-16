@@ -1,26 +1,22 @@
 <template>
   <div>
-    <canvas class="webgl" id="container" ref="container"></canvas>
+    <canvas class="webgl" id="canvas" ref="canvas"></canvas>
     <!--搞个聊天窗口-->
-    <div id="chat-panel">
+    <div id="chat-panel" v-show="isChatOpen">
       <div id="chat-content">
-        <h1>Chat Room</h1>
-        <el-scrollbar>
-          <p v-for="msg in chatMsgList" :key="msg.index">
+        <el-scrollbar id="chat-scroll" style="margin: 0;padding: 0">
+          <p v-for="msg in chatMsgList" :key="msg.index" style="margin: 0;font-size: 24px">
             <span>{{ msg.username }}:</span>
             {{ msg.msg }}
           </p>
         </el-scrollbar>
       </div>
       <div id="chat-input">
-        <el-input
+        <input
             placeholder="Please input" type="text"
             v-model="inputMsg"
+            style="font-size: 24px; height: 100%;width: 100%"
         >
-          <template #prepend>
-            <el-button @click="chatSend">Send</el-button>
-          </template>
-        </el-input>
       </div>
     </div>
   </div>
@@ -32,27 +28,41 @@ import {Game} from "@/rawjs/Game.js"
 // import {OrbitControls} from "three/examples/jsm/controls/OrbitControls"
 // import {FBXLoader} from "three/examples/jsm/loaders/FBXLoader.js"
 
-import {ref} from "vue";
+import {ref, reactive} from "vue";
 
 export default {
   setup() {
     const {io} = require("socket.io-client")
     let socket = io("localhost:4040")
     let inputMsg = ref("")
-    let chatMsgList = ref([])
-
-    // 监听所有人发送的消息，包括自己的
-    socket.on("chat-send", (args) => {
-      console.log("Receive chat:" + args.msg)
-      chatMsgList.value.push(args)
-    })
+    let chatMsgList = reactive([])
+    let isChatOpen = ref(false)
 
     return {
-      socket, inputMsg, chatMsgList
+      socket, inputMsg, chatMsgList,
+      isChatOpen,
     }
   },
   mounted() {
-    let game = new Game()
+    const chatScroll = document.querySelector('#chat-scroll')
+    // 监听按键
+    document.onkeydown = (e) => {
+      let keyNum = e.keyCode        //获取被按下的键值
+      if (keyNum === 13) {
+        if (this.inputMsg === "") {
+          this.isChatOpen = !this.isChatOpen
+        } else {
+          this.chatSend(chatScroll)
+        }
+      }
+    }
+
+    // 监听socket
+    this.socket.on("chat-send", (args) => {
+      this.chatMsgList.push(args)
+    })
+
+    let game = new Game(this.socket)
     game.init()
     game.start()
   },
@@ -75,21 +85,22 @@ export default {
 }
 </script>
 <style scoped>
-#container {
-  width: 95%;
+#canvas {
+  width: 100%;
   height: 100%;
   padding: 0;
+  margin: 0;
   position: fixed;
-  right: 0;
-  top: 60px;
+  bottom: 0;
 }
 
 #chat-panel {
   width: 100%;
   height: 20%;
+  padding: 0;
+  margin: 0;
   position: fixed;
   bottom: 0;
-  border: 2px;
   background-color: beige;
 }
 
