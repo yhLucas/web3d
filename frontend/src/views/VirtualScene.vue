@@ -113,6 +113,7 @@ export default {
   position: fixed;
   bottom: 0;
   background-color: beige;
+  display: none;
 }
 
 #chat-content {
