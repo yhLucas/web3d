@@ -2,9 +2,9 @@
   <div>
     <canvas class="webgl" id="canvas" ref="canvas"></canvas>
     <!--搞个聊天窗口-->
-    <div id="chat-panel" v-show="isChatOpen">
+    <div id="chat-panel">
       <div id="chat-content">
-        <el-scrollbar id="chat-scroll" style="margin: 0;padding: 0">
+        <el-scrollbar ref="chatScroll" style="margin: 0;padding: 0">
           <p v-for="msg in chatMsgList" :key="msg.index" style="margin: 0;font-size: 24px">
             <span>{{ msg.username }}:</span>
             {{ msg.msg }}
@@ -15,6 +15,7 @@
         <input
             placeholder="Please input" type="text"
             v-model="inputMsg"
+            id="input-box"
             style="font-size: 24px; height: 100%;width: 100%"
         >
       </div>
@@ -37,22 +38,31 @@ export default {
     let inputMsg = ref("")
     let chatMsgList = reactive([])
     let isChatOpen = ref(false)
+    let chatScroll = reactive(null)
 
     return {
       socket, inputMsg, chatMsgList,
       isChatOpen,
+      chatScroll
     }
   },
   mounted() {
-    const chatScroll = document.querySelector('#chat-scroll')
+    const inputBox = document.querySelector('#input-box')
+    const chatPanel = document.querySelector("#chat-panel")
     // 监听按键
     document.onkeydown = (e) => {
       let keyNum = e.keyCode        //获取被按下的键值
       if (keyNum === 13) {
         if (this.inputMsg === "") {
           this.isChatOpen = !this.isChatOpen
+          if (this.isChatOpen) {
+            chatPanel.style.display = "block"
+            inputBox.focus()
+          } else {
+            chatPanel.style.display = "none"
+          }
         } else {
-          this.chatSend(chatScroll)
+          this.chatSend()
         }
       }
     }
@@ -60,6 +70,7 @@ export default {
     // 监听socket
     this.socket.on("chat-send", (args) => {
       this.chatMsgList.push(args)
+      this.chatScroll.setScrollTop(Number.MAX_SAFE_INTEGER)
     })
 
     let game = new Game(this.socket)
