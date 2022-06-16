@@ -1,4 +1,10 @@
 import * as THREE from 'three'
+// import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {LocalPlayer} from "@/rawjs/Player.js"
+import {ChessBoard} from "@/rawjs/ChessBoard";
+// import {Color} from "three";
+
+// import {Vector3} from "three";
 
 export class Game {
 
@@ -21,7 +27,10 @@ export class Game {
         const game = this
 
         function animate() {
+            // game.controls.update()
             game.renderer.render(game.scene, game.camera)
+            game.localPlayer.animate()
+            game.chessBoard.animate()
             requestAnimationFrame(animate)
         }
 
@@ -30,15 +39,17 @@ export class Game {
 
     init() {
         this.initScene()
-        this.initCamera()
         this.initLight()
         this.initGround()
         this.initRenderer()
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-        const cube = new THREE.Mesh(geometry, material);
-        this.scene.add(cube);
-        this.camera.position.z = 5;
+        this.initPlayer()
+
+        this.chessBoard = new ChessBoard()
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                this.scene.add(this.chessBoard.grids[i][j].getMesh())
+            }
+        }
     }
 
     initScene() {
@@ -47,9 +58,11 @@ export class Game {
         this.scene.fog = new THREE.Fog(0xa0a0a0, 1000, 5000)
     }
 
-    initCamera() {
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-        this.camera.position.set(0, 0, 0)
+    initPlayer() {
+        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
+        this.localPlayer = new LocalPlayer(this.camera)
+        this.localPlayer.init()
+        this.scene.add(this.localPlayer.mesh)
     }
 
     initLight() {
@@ -65,13 +78,12 @@ export class Game {
         light.shadow.camera.left = -shadowSize
         light.shadow.camera.right = shadowSize
         this.scene.add(light)
-        this.sun = light
     }
 
     initGround() {
         // 物体区域
         let mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(10000, 10000), new THREE.MeshPhongMaterial({
-            color: 0x999999,
+            color: 0x448899,
             depthWrite: false
         }))
         mesh.rotation.x = -Math.PI / 2
