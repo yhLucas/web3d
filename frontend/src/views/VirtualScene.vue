@@ -1,14 +1,16 @@
 <template>
   <div>
-    <canvas class="webgl" id="container"></canvas>
+    <canvas class="webgl" id="container" ref="container"></canvas>
     <!--搞个聊天窗口-->
     <div id="chat-panel">
       <div id="chat-content">
-        <h3>Chat Room</h3>
-        <p v-for="msg in chatMsgList" :key="msg.index">
-          <span>{{ msg.username }}:</span>
-          {{ msg.msg }}
-        </p>
+        <h1>Chat Room</h1>
+        <el-scrollbar>
+          <p v-for="msg in chatMsgList" :key="msg.index">
+            <span>{{ msg.username }}:</span>
+            {{ msg.msg }}
+          </p>
+        </el-scrollbar>
       </div>
       <div id="chat-input">
         <el-input
@@ -24,7 +26,8 @@
   </div>
 </template>
 <script>
-import {store} from "@/store";
+import {store} from "@/store"
+import {Game} from "@/rawjs/Game.js"
 // import * as THREE from 'three'
 // import {OrbitControls} from "three/examples/jsm/controls/OrbitControls"
 // import {FBXLoader} from "three/examples/jsm/loaders/FBXLoader.js"
@@ -38,23 +41,20 @@ export default {
     let inputMsg = ref("")
     let chatMsgList = ref([])
 
-    // 设置区域
-    Math.seed = 5
-    // 种子随机
-    Math.random = (max, min) => {
-      max = max || 1
-      min = min || 0
-      Math.seed = (Math.seed * 9301 + 49297) % 233280
-      let rnd = Math.seed / 233280.0
-      return min + rnd * (max - min)
-    }
     // 监听所有人发送的消息，包括自己的
     socket.on("chat-send", (args) => {
       console.log("Receive chat:" + args.msg)
       chatMsgList.value.push(args)
     })
 
-    return {socket, inputMsg, chatMsgList}
+    return {
+      socket, inputMsg, chatMsgList
+    }
+  },
+  mounted() {
+    let game = new Game()
+    game.init()
+    game.start()
   },
   methods: {
     chatSend() {
@@ -76,9 +76,9 @@ export default {
 </script>
 <style scoped>
 #container {
-  width: 90%;
+  width: 95%;
   height: 100%;
-  padding: 8px;
+  padding: 0;
   position: fixed;
   right: 0;
   top: 60px;
