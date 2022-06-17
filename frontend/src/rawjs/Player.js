@@ -4,7 +4,7 @@ import * as THREE from "three";
 
 const ROTATION_SENSITIVITY = 100
 const SPEED = 25
-const CAMERA_OFFSET = 5
+const CAMERA_OFFSET = 30
 
 // 用于同步，渲染其他玩家的形象
 export class Player {

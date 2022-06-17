@@ -27,10 +27,17 @@ export class Game {
         const game = this
 
         function animate() {
-            // game.controls.update()
             game.renderer.render(game.scene, game.camera)
+            // 玩家位置与镜头更新
             game.localPlayer.animate()
-            game.chessBoard.animate()
+            game.chessBoard.fresh()
+
+
+            // 玩家与棋盘交互
+            game.chessBoard.localPlayerInteract(game.localPlayer, "on");
+
+            // 将棋盘缓冲的颜色写入
+            game.chessBoard.flush()
             requestAnimationFrame(animate)
         }
 
@@ -59,7 +66,7 @@ export class Game {
     }
 
     initPlayer() {
-        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
+        this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000)
         this.localPlayer = new LocalPlayer(this.camera)
         this.localPlayer.init()
         this.scene.add(this.localPlayer.mesh)
