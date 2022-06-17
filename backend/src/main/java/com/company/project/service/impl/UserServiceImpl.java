@@ -47,13 +47,11 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         }catch(Exception e){
             return ResultGenerator.genFailResult("登出失败");
         }
-
     }
 
     public static User getUser(Integer token){
         return map.get(token);
     }
-
 
     @Override
     public void save(User user){

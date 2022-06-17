@@ -1,12 +1,12 @@
 package com.company.project.service.impl;
 
+import com.company.project.core.AbstractService;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.dao.LogMapper;
 import com.company.project.model.Log;
 import com.company.project.model.User;
 import com.company.project.service.LogService;
-import com.company.project.core.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
