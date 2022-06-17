@@ -11,7 +11,7 @@ export class Player {
     constructor() {
         this.position = new Vector3()
         this.direction = new Vector3()
-        this.position = new Vector3(1, 1, 1)
+        this.position = new Vector3(0, 0, 0)
         this.collider = new BoxGeometry(1, 1, 1)
         this.mesh = new Mesh(this.collider, new THREE.MeshPhongMaterial({
             color: 0x444444,
@@ -21,7 +21,11 @@ export class Player {
 
     moveTo(position) {
         let pos = new Vector3(position.x, position.y, position.z)
-        let delta = pos.sub(this.position)
+        let delta = new Vector3(position.x, position.y, position.z)
+        delta.sub(this.position)
+        console.log("目标位置:" + pos.x)
+        console.log("当前位置:" + this.position.x)
+        console.log("差距:" + delta.x)
         this.collider.translate(delta.x, delta.y, delta.z)
         this.position = pos
     }

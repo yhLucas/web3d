@@ -12,7 +12,7 @@ export class Game {
         this.clock = new THREE.Clock()
         console.log(name)
         this.name = Math.random()
-        this.players = {}
+        this.players = new Map()
         // 设置假随机
         let SEED = 5
         this.random = (max, min) => {
@@ -74,23 +74,30 @@ export class Game {
         // socket监听处理
         // 有人加入，服务器广播所有玩家
         this.socket.on('game-players', (args) => {
-            console.log(args)
             for (const playerName of args) {
-                console.log(playerName)
                 // 跳过已经有的和自己
-                if (this.players[playerName] || playerName === this.name) continue
+                if (this.players.has(playerName) || playerName === this.name) continue
                 // 生成新加入的玩家
                 let player = new Player()
-                this.players[args.name] = player
+                this.players.set(playerName, player)
                 this.scene.add(player.mesh)
+            }
+        })
+        // 有人退出
+        this.socket.on('game-leave', (args) => {
+            // 存在对应玩家角色，删除之
+            if (this.players.has(args)) {
+                let player = this.players.get(args)
+                this.scene.remove(player.mesh)
+                this.players.delete(args)
             }
         })
 
         this.socket.on('game-sync', (args) => {
             if (args.name === this.name) return
             // 更新其他玩家位置
-            if (this.players[args.name]) {
-                this.players[args.name].moveTo(args.playerPosition)
+            if (this.players.has(args.name)) {
+                this.players.get(args.name).moveTo(args.playerPosition)
             }
         })
     }
