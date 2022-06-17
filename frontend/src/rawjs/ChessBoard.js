@@ -45,10 +45,10 @@ export class ChessBoard {
     }
 
     // 根据玩家位置激发棋盘状态
-    localPlayerInteract(player, method = ON) {
+    localPlayerInteract(position, method = ON) {
         let methodOther = method + OTHER
-        let i = Math.floor(player.position.x / WIDTH)
-        let j = Math.floor(player.position.z / WIDTH)
+        let i = Math.floor(position.x / WIDTH)
+        let j = Math.floor(position.z / WIDTH)
         // 目标有效
         if (this.grids[i] && this.grids[i][j]) {
             let index = i * 8 + j

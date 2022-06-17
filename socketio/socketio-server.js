@@ -11,6 +11,7 @@ server.listen(4040, () => {
 const BROADCAST_EVENTS = [
     'chat-send',
     'game-sync',
+    'game-interact'
 ]
 
 let players = []

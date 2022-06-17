@@ -34,7 +34,7 @@ export class Game {
             // 清除cover
             game.chessBoard.clear()
             // 赋予cover，处理皇后交互
-            game.chessBoard.localPlayerInteract(game.localPlayer, "on")
+            game.chessBoard.localPlayerInteract(game.localPlayer.position, "on")
             // 将棋盘缓冲的颜色写入
             game.chessBoard.updateQueenStatus()
             game.chessBoard.flush()
@@ -66,7 +66,12 @@ export class Game {
         document.addEventListener('keydown', (event) => {
             switch (event.key) {
                 case "j":
-                    this.chessBoard.localPlayerInteract(this.localPlayer, QUEEN)
+                    // 发送广播事件
+                    this.socket.emit('game-interact', {
+                        position: this.localPlayer.position,
+                        method: QUEEN
+                    })
+                    // this.chessBoard.localPlayerInteract(this.localPlayer.position, QUEEN)
                     break
             }
         });
@@ -92,12 +97,18 @@ export class Game {
                 this.players.delete(args)
             }
         })
-
+        // 玩家位置同步
         this.socket.on('game-sync', (args) => {
             if (args.name === this.name) return
             // 更新其他玩家位置
             if (this.players.has(args.name)) {
                 this.players.get(args.name).moveTo(args.playerPosition)
+            }
+        })
+        // 交互事件广播
+        this.socket.on('game-interact', (args) => {
+            if (args.position && args.method) {
+                this.chessBoard.localPlayerInteract(args.position, args.method)
             }
         })
     }
