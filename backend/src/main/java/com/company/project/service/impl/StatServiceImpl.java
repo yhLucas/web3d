@@ -35,9 +35,14 @@ public class StatServiceImpl extends AbstractService<Stat> implements StatServic
     public Result update(Integer token, String scene){
         User user = UserServiceImpl.getUser(token);
         //  获取对应的Stat
+        int uid = user.getUserId();
         Stat stat = statMapper.selectByUidAndScene(user.getUserId(), scene);
-        stat.setPass(true);
-        statMapper.updateByPrimaryKey(stat);
+        statMapper.delete(stat);
+        Stat newStat = new Stat();
+        newStat.setPass(true);
+        newStat.setScene(scene);
+        newStat.setUserId(uid);
+        statMapper.insert(newStat);
         return ResultGenerator.genSuccessResult();
     }
 
