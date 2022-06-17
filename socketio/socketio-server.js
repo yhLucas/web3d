@@ -24,4 +24,8 @@ io.on("connection", (socket) => {
         // 广播给所有客户端
         io.sockets.emit("chat-send", (arg))
     })
+
+    socket.on("test", (arg) => {
+        console.log(arg)
+    })
 })

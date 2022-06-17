@@ -37,6 +37,10 @@ export class Game {
             // 将棋盘缓冲的颜色写入
             game.chessBoard.updateQueenStatus()
             game.chessBoard.flush()
+
+            game.socket.emit("test", {
+                msg: "in Game"
+            })
             requestAnimationFrame(animate)
         }
 
