@@ -16,16 +16,24 @@ io.on("connect", () => {
 //     console.log('A client disconnected')
 // })
 
-io.on("connection", (socket) => {
-    // 客户端发送chat
-    socket.on("chat-send", (arg, callback) => {
-        console.log(arg)
-        callback("got it")
-        // 广播给所有客户端
-        io.sockets.emit("chat-send", (arg))
-    })
+const BROADCAST_EVENTS = [
+    'chat-send',
+    'game-sync',
+]
 
-    socket.on("test", (arg) => {
-        console.log(arg)
+let players = []
+
+io.on("connection", (socket) => {
+    for (const eventName of BROADCAST_EVENTS) {
+        socket.on(eventName, (arg) => {
+            // console.log(arg)
+            io.sockets.emit(eventName, (arg))
+        })
+    }
+    // 有人登陆，记下来
+    socket.on('game-login', (arg) => {
+        players.push(arg.name)
+        console.log(players)
+        io.sockets.emit('game-players', (players))
     })
 })

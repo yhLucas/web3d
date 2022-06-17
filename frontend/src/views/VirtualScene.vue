@@ -73,7 +73,7 @@ export default {
       this.chatScroll.setScrollTop(Number.MAX_SAFE_INTEGER)
     })
 
-    let game = new Game(this.socket)
+    let game = new Game(store.getters.getUsername, this.socket)
     game.init()
     game.start()
   },
@@ -86,8 +86,6 @@ export default {
       this.socket.emit("chat-send", {
         username: store.getters.getUsername,
         msg: this.inputMsg
-      }, (response) => {
-        console.log(response)
       })
       // IO
       this.inputMsg = ""

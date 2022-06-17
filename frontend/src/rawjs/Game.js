@@ -1,17 +1,18 @@
 import * as THREE from 'three'
 // import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-import {LocalPlayer} from "@/rawjs/Player.js"
+import {LocalPlayer, Player} from "@/rawjs/Player.js"
 import {ChessBoard, QUEEN} from "@/rawjs/ChessBoard";
 // import {Color} from "three";
 
 // import {Vector3} from "three";
 
 export class Game {
-
-    constructor(socket = null) {
+    constructor(name, socket = null) {
         this.socket = socket
         this.clock = new THREE.Clock()
-
+        console.log(name)
+        this.name = Math.random()
+        this.players = {}
         // 设置假随机
         let SEED = 5
         this.random = (max, min) => {
@@ -38,9 +39,9 @@ export class Game {
             game.chessBoard.updateQueenStatus()
             game.chessBoard.flush()
 
-            game.socket.emit("test", {
-                msg: "in Game"
-            })
+            // 同步玩家位置
+            game.playerSyncSend()
+
             requestAnimationFrame(animate)
         }
 
@@ -53,6 +54,7 @@ export class Game {
         this.initGround()
         this.initRenderer()
         this.initPlayer()
+        this.socketLogin()
 
         this.chessBoard = new ChessBoard()
         for (let i = 0; i < 8; i++) {
@@ -68,6 +70,43 @@ export class Game {
                     break
             }
         });
+
+        // socket监听处理
+        // 有人加入，服务器广播所有玩家
+        this.socket.on('game-players', (args) => {
+            console.log(args)
+            for (const playerName of args) {
+                console.log(playerName)
+                // 跳过已经有的和自己
+                if (this.players[playerName] || playerName === this.name) continue
+                // 生成新加入的玩家
+                let player = new Player()
+                this.players[args.name] = player
+                this.scene.add(player.mesh)
+            }
+        })
+
+        this.socket.on('game-sync', (args) => {
+            if (args.name === this.name) return
+            // 更新其他玩家位置
+            if (this.players[args.name]) {
+                this.players[args.name].moveTo(args.playerPosition)
+            }
+        })
+    }
+
+    // 告知服务器有人加入
+    socketLogin() {
+        this.socket.emit('game-login', {
+            name: this.name
+        })
+    }
+
+    playerSyncSend() {
+        this.socket.emit('game-sync', {
+            name: this.name,
+            playerPosition: this.localPlayer.position
+        })
     }
 
     initScene() {

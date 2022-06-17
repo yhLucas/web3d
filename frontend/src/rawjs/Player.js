@@ -11,6 +11,19 @@ export class Player {
     constructor() {
         this.position = new Vector3()
         this.direction = new Vector3()
+        this.position = new Vector3(1, 1, 1)
+        this.collider = new BoxGeometry(1, 1, 1)
+        this.mesh = new Mesh(this.collider, new THREE.MeshPhongMaterial({
+            color: 0x444444,
+        }))
+        this.collider.translate(0, 1, 0)
+    }
+
+    moveTo(position) {
+        let pos = new Vector3(position.x, position.y, position.z)
+        let delta = pos.sub(this.position)
+        this.collider.translate(delta.x, delta.y, delta.z)
+        this.position = pos
     }
 }
 
@@ -20,16 +33,9 @@ export class LocalPlayer extends Player {
         super()
         camera.rotation.order = 'YXZ'
         this.camera = camera
-        this.velocity = new Vector3()
         // 记录运动状态，前后左右
         this.keyStates = {}
         this.clock = new Clock()
-        this.position = new Vector3(1, 1, 1)
-        this.collider = new BoxGeometry(1, 1, 1)
-        this.mesh = new Mesh(this.collider, new THREE.MeshPhongMaterial({
-            color: 0x444444,
-        }))
-        this.collider.translate(0, 1, 0)
     }
 
     init() {
