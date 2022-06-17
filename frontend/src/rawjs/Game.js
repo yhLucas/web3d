@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 // import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {LocalPlayer} from "@/rawjs/Player.js"
-import {ChessBoard} from "@/rawjs/ChessBoard";
+import {ChessBoard, QUEEN} from "@/rawjs/ChessBoard";
 // import {Color} from "three";
 
 // import {Vector3} from "three";
@@ -30,13 +30,12 @@ export class Game {
             game.renderer.render(game.scene, game.camera)
             // 玩家位置与镜头更新
             game.localPlayer.animate()
-            game.chessBoard.fresh()
-
-
-            // 玩家与棋盘交互
-            game.chessBoard.localPlayerInteract(game.localPlayer, "on");
-
+            // 清除cover
+            game.chessBoard.clear()
+            // 赋予cover，处理皇后交互
+            game.chessBoard.localPlayerInteract(game.localPlayer, "on")
             // 将棋盘缓冲的颜色写入
+            game.chessBoard.updateQueenStatus()
             game.chessBoard.flush()
             requestAnimationFrame(animate)
         }
@@ -57,6 +56,14 @@ export class Game {
                 this.scene.add(this.chessBoard.grids[i][j].getMesh())
             }
         }
+
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case "j":
+                    this.chessBoard.localPlayerInteract(this.localPlayer, QUEEN)
+                    break
+            }
+        });
     }
 
     initScene() {
