@@ -92,13 +92,9 @@ export default {
       let data = new FormData()
       data.append('token', store.getters.getToken)
       data.append('scene', "Eight Queens Puzzle")
-      axios.post('/api/scene/history', data).then((res) => {
-        let data = res.data
-        if (data.code === 200) {
-          console.log(data.data)
-        }
-      })
-
+      // 生成历史记录
+      axios.post('/api/scene/history', data)
+      axios.post('/api/record', data)
       // 发送进入场景的请求
       router.push({
         name: 'VirtualScene',
@@ -125,8 +121,18 @@ export default {
       console.log(res)
       let data = res.data
       if (data.code === 200) {
-        console.log(data.data)
         this.tableData = data.data
+      }
+    })
+    axios.get('/api/stat/all', {
+      params: {
+        scene: "Eight Queens Puzzle"
+      }
+    }).then((res) => {
+      console.log(res)
+      let data = res.data
+      if (data.code === 200) {
+        console.log(data.data)
       }
     })
   }
