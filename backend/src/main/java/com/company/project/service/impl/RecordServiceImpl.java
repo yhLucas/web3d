@@ -25,6 +25,7 @@ public class RecordServiceImpl extends AbstractService<Record> implements Record
     @Override
     public Result save(Integer token, String scene){
         User user = UserServiceImpl.getUser(token);
+        System.out.println(scene);
         Record record = new Record(user.getUserId(), scene);
         recordMapper.insert(record);
         return ResultGenerator.genSuccessResult();
