@@ -157,8 +157,10 @@ class ChessBoard {
         let pos = new THREE.Vector3()
         pos.copy(position)
         pos.x -= 3122
+        pos.x += 0.5 * WIDTH
         pos.x -= OFFSET_X
         pos.z += 170
+        pos.z -= 0.5 * WIDTH
         pos.z -= OFFSET_Z
         let methodOther = method + OTHER
         let i = Math.floor(pos.x / WIDTH)
