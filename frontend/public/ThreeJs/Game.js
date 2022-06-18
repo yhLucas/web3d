@@ -445,7 +445,11 @@ class Game {
         // 清除cover
         game.chessBoard.clear()
         // 赋予cover，处理皇后交互
-        game.chessBoard.localPlayerInteract(game.player.object.position, "on")
+        try{
+        	game.chessBoard.localPlayerInteract(game.player.object.position, "on")
+        }catch(e){
+        	console.log("player坐标还没缓冲好哦")
+        }
         // 将棋盘缓冲的颜色写入
         game.chessBoard.updateQueenStatus()
         game.chessBoard.flush()
