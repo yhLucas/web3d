@@ -36,14 +36,16 @@
               <template #title>
                 <h1 class="font-big">VirtualScenes</h1>
               </template>
-              <el-card @click="toVirtualScene" style="width: 460px">
+              <el-card style="width: 460px">
                 }
                 <img
                     src="https://www.researchgate.net/profile/Curtis-Bright/publication/333815714/figure/fig1/AS:770619155156992@1560741332335/A-visual-representation-of-a-solution-for-the-8-queens-problem-left-and-the-variables.png">
                 <div style="padding: 14px">
                   <p class="text-normal">Eight Queens Problem</p>
                   <p class="text-small">Hits:18</p>
-                  <p class="text-small">Pass rates:20%</p>
+                  <p class="text-small">Pass rates:20%
+                    <el-button type="primary" plain @click="toVirtualScene"
+                    style="margin-left: 20px;font-size: 20px">Try it now!</el-button></p>
                 </div>
               </el-card>
             </el-collapse-item>

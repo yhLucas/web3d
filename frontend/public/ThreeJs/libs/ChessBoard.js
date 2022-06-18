@@ -1,6 +1,8 @@
 const NUMBER = 8
-const WIDTH = 150
+const WIDTH = 360
 
+const OFFSET_X = -1200
+const OFFSET_Z = -1400
 const OTHER = "Other"
 const ON = "on"
 const ON_OTHER = "onOther"
@@ -50,12 +52,16 @@ class ChessBoard {
 
     // 根据玩家位置激发棋盘状态
     localPlayerInteract(position, method = ON) {
-        position.x-=3122
-        position.z+=170
+        let pos = new THREE.Vector3()
+        pos.copy(position)
+        pos.x -= 3122
+        pos.x -= OFFSET_X
+        pos.z += 170
+        pos.z -= OFFSET_Z
         let methodOther = method + OTHER
-        let i = Math.floor(position.x / WIDTH)
-        let j = Math.floor(position.z / WIDTH)+1
-        
+        let i = Math.floor(pos.x / WIDTH)
+        let j = Math.floor(pos.z / WIDTH) + 1
+
         // 目标有效
         if (this.grids[i] && this.grids[i][j]) {
             let index = i * 8 + j
@@ -125,7 +131,7 @@ class ChessBoard {
 class ChessGrid {
     constructor(i, j) {
         this.geometry = new THREE.BoxGeometry(WIDTH, 0.01, WIDTH);
-        this.geometry.translate(i * WIDTH, 0, j * WIDTH)
+        this.geometry.translate(i * WIDTH + OFFSET_X, 0, j * WIDTH + OFFSET_Z)
         this.originalColor = new THREE.Color("#000000")
         if ((i + j) % 2 === 1) {
             this.originalColor = new THREE.Color("#ffffff")

@@ -50,7 +50,6 @@
             text-color="#545c64"
             router
         >
-
           <el-menu-item index="/" v-if="windowWidth<500">Home</el-menu-item>
           <el-menu-item index="/VirtualScene" v-if="windowWidth<500&&store.getters.isLogged">VirtualScene</el-menu-item>
           <el-menu-item index="/User/Center" v-if="windowWidth<500&&store.getters.isLogged">UserCenter</el-menu-item>
