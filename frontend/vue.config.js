@@ -6,10 +6,10 @@ module.exports = defineConfig({
         proxy: {
             // 对api前缀请求到
             '/api': {
-                target: 'http://47.101.188.143:8082/',
+                target: 'http://124.222.244.254:8080/',
+                // target: 'http://127.0.0.1:8080/',
                 changeOrigin: true,
-            }
-            ,
+            },
         },
         //vue自己启动的端口
         port: 8081

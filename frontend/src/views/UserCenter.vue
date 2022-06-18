@@ -77,6 +77,15 @@ import axios from "axios";
 export default {
   name: "UserCenter",
   setup() {
+    Date.prototype.yyyymmdd = function () {
+      let mm = this.getMonth() + 1; // getMonth() is zero-based
+      let dd = this.getDate();
+
+      return [this.getFullYear(),
+        (mm > 9 ? '' : '0') + mm,
+        (dd > 9 ? '' : '0') + dd
+      ].join('/');
+    };
     const stat = ref('new')
     const value = ref('Random')
     const options = ['Random', 'BeachBabe', 'BusinessMan', 'Doctor', 'FireFighter', 'Housewife', 'Policeman', 'Prostitute', 'Punk', 'RiotCop', 'Roadworker', 'Robber', 'Sheriff', 'Streetman', 'Waitress']
@@ -121,6 +130,10 @@ export default {
       console.log(res)
       let data = res.data
       if (data.code === 200) {
+        for (let i = 0; i < data.data.length; i++) {
+          let date = new Date(data.data[i].time)
+          data.data[i].time = date.yyyymmdd()
+        }
         this.tableData = data.data
       }
     })
