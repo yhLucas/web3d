@@ -147,6 +147,27 @@ class Game {
         }
 
         window.addEventListener('resize', () => game.onWindowResize(), false);
+        //增加棋盘
+		this.chessBoard = new ChessBoard()
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+            	this.chessBoard.grids[i][j].geometry.translate(3122, 10, -173)
+                this.scene.add(this.chessBoard.grids[i][j].getMesh())
+            }
+        }
+
+        document.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case "j":
+                    // 发送广播事件
+                    this.chessBoard.socket.emit('game-interact', {
+                        position: this.player.object.position,
+                        method: QUEEN
+                    })
+                    // this.chessBoard.localPlayerInteract(this.localPlayer.position, QUEEN)
+                    break
+            }
+        });
     }
 
     loadEnvironment(loader) {
@@ -421,6 +442,19 @@ class Game {
         if (this.speechBubble !== undefined) this.speechBubble.show(this.camera.position);
 
         this.renderer.render(this.scene, this.camera);
+        //start
+        // // 清除cover
+        // game.chessBoard.clear()
+        // // 赋予cover，处理皇后交互
+        // try{
+        // 	game.chessBoard.localPlayerInteract(game.player.object.position, "on")
+        // }catch(e){
+        // 	console.log(e)
+        // }
+        // // 将棋盘缓冲的颜色写入
+        // game.chessBoard.updateQueenStatus()
+        // game.chessBoard.flush()
+        //end
     }
 }
 
