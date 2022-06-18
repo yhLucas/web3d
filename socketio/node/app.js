@@ -47,7 +47,7 @@ io.sockets.on('connection', function(socket){
 
 	socket.on('game-interact', (args) => {
         console.log(args.position)
-        socket.emit('game-interact', args);
+        io.socket.emit('game-interact', args);
     })
 
 });
