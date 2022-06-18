@@ -26,12 +26,6 @@
           </el-icon>
           <template #title>UserCenter</template>
         </el-menu-item>
-        <el-menu-item index="/VirtualScene" v-if="store.getters.isLogged">
-          <el-icon>
-            <document/>
-          </el-icon>
-          <template #title>VirtualScene</template>
-        </el-menu-item>
         <el-menu-item index="/User/Login" class="flex" v-if="!store.getters.isLogged">
           <el-icon>
             <document/>
@@ -56,9 +50,6 @@
             text-color="#545c64"
             router
         >
-          <el-radio-group v-if="windowWidth>=500" v-model="isCollapse" style="margin-bottom: 20px">
-            <el-radio-button :label="!isCollapse">expand</el-radio-button>
-          </el-radio-group>
 
           <el-menu-item index="/" v-if="windowWidth<500">Home</el-menu-item>
           <el-menu-item index="/VirtualScene" v-if="windowWidth<500&&store.getters.isLogged">VirtualScene</el-menu-item>
@@ -72,11 +63,7 @@
         </el-menu>
       </el-header>
       <el-main id="container">
-        <router-view v-slot="{Component}">
-          <keep-alive>
-            <component :is="Component"/>
-          </keep-alive>
-        </router-view>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -91,7 +78,7 @@ export default {
   data() {
     return {
       store,
-      isCollapse: true,
+      isCollapse: false,
       windowWidth: document.documentElement.clientWidth,
     }
   },
@@ -168,7 +155,7 @@ html, body, #header {
   margin-left: auto;
 }
 
-#container{
+#container {
   padding: 0;
 }
 
