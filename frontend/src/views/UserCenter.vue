@@ -42,7 +42,7 @@
                     src="https://www.researchgate.net/profile/Curtis-Bright/publication/333815714/figure/fig1/AS:770619155156992@1560741332335/A-visual-representation-of-a-solution-for-the-8-queens-problem-left-and-the-variables.png">
                 <div style="padding: 14px">
                   <p class="text-normal">Eight Queens Puzzle</p>
-                  <p class="text-small">Played:{{ playedNumber }}</p>
+                  <p class="text-small">Played by:{{ playedNumber }} user</p>
                   <p class="text-small">Pass rate:{{ passRate }}%
                     <el-button type="primary" plain @click="toVirtualScene"
                                style="margin-left: 20px;font-size: 20px">Try it now!
@@ -95,8 +95,8 @@ export default {
         time: '2016-05-03',
       },
     ])
-    let playedNumber = 0
-    let passRate = 0
+    let playedNumber = ref(0)
+    let passRate = ref(0)
     const toVirtualScene = () => {
       let data = new FormData()
       data.append('token', store.getters.getToken)
@@ -127,7 +127,6 @@ export default {
         token: store.getters.getToken
       }
     }).then((res) => {
-      console.log(res)
       let data = res.data
       if (data.code === 200) {
         for (let i = 0; i < data.data.length; i++) {
@@ -142,10 +141,15 @@ export default {
         scene: "Eight Queens Puzzle"
       }
     }).then((res) => {
-      console.log(res)
       let data = res.data
       if (data.code === 200) {
-        console.log(data.data)
+        let str = data.data.data
+        this.playedNumber = parseInt(str.substring(1))
+        let passNumber = parseInt(str.substring(str.indexOf("人") + 10))
+        this.passRate = passNumber / this.playedNumber
+        this.passRate = (passNumber / this.playedNumber).toFixed(2)
+        console.log(this.playedNumber)
+        console.log(this.passRate)
       }
     })
   }
