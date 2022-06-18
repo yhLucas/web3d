@@ -41,21 +41,23 @@
                 <img
                     src="https://www.researchgate.net/profile/Curtis-Bright/publication/333815714/figure/fig1/AS:770619155156992@1560741332335/A-visual-representation-of-a-solution-for-the-8-queens-problem-left-and-the-variables.png">
                 <div style="padding: 14px">
-                  <p class="text-normal">Eight Queens Problem</p>
-                  <p class="text-small">Hits:18</p>
-                  <p class="text-small">Pass rates:20%
+                  <p class="text-normal">Eight Queens Puzzle</p>
+                  <p class="text-small">Played:{{ playedNumber }}</p>
+                  <p class="text-small">Pass rate:{{ passRate }}%
                     <el-button type="primary" plain @click="toVirtualScene"
-                    style="margin-left: 20px;font-size: 20px">Try it now!</el-button></p>
+                               style="margin-left: 20px;font-size: 20px">Try it now!
+                    </el-button>
+                  </p>
                 </div>
               </el-card>
             </el-collapse-item>
             <el-collapse-item name="4" class="text-title">
               <template #title>
-                <h1 class="font-big">Records</h1>
+                <h1 class="font-big">History</h1>
               </template>
               <el-table :data="tableData" style="width: 100%; text-align: left" class="font-middle">
-                <el-table-column prop="scene" label="Scene" width="180"/>
-                <el-table-column prop="time" label="Date" width="180"/>
+                <el-table-column prop="scene" label="Scene" width="360"/>
+                <el-table-column prop="time" label="Date" width="360"/>
               </el-table>
             </el-collapse-item>
           </el-collapse>
@@ -69,7 +71,7 @@
 import {store} from "@/store"
 import {ref} from 'vue'
 import router from "@/router";
-// import axios from "axios";
+import axios from "axios";
 // import {ElMessage} from "element-plus";
 
 export default {
@@ -78,15 +80,26 @@ export default {
     const stat = ref('new')
     const value = ref('Random')
     const options = ['Random', 'BeachBabe', 'BusinessMan', 'Doctor', 'FireFighter', 'Housewife', 'Policeman', 'Prostitute', 'Punk', 'RiotCop', 'Roadworker', 'Robber', 'Sheriff', 'Streetman', 'Waitress']
-    const tableData = [
+    const tableData = ref([
       {
         scene: '汉诺塔',
         time: '2016-05-03',
       },
-    ]
+    ])
+    let playedNumber = 0
+    let passRate = 0
     const toVirtualScene = () => {
+      let data = new FormData()
+      data.append('token', store.getters.getToken)
+      data.append('scene', "Eight Queens Puzzle")
+      axios.post('/api/scene/history', data).then((res) => {
+        let data = res.data
+        if (data.code === 200) {
+          console.log(data.data)
+        }
+      })
+
       // 发送进入场景的请求
-      console.log(value.value)
       router.push({
         name: 'VirtualScene',
         query: {
@@ -95,11 +108,28 @@ export default {
       })
     }
     return {
-      value, options, tableData, stat,
+      value, options, tableData, stat, playedNumber, passRate,
       store,
       toVirtualScene
     }
   },
+  mounted() {
+    // 查找历史
+    let data = new FormData()
+    data.append('token', store.getters.getToken)
+    axios.get('/api/scene/history', {
+      params: {
+        token: store.getters.getToken
+      }
+    }).then((res) => {
+      console.log(res)
+      let data = res.data
+      if (data.code === 200) {
+        console.log(data.data)
+        this.tableData = data.data
+      }
+    })
+  }
 }
 </script>
 

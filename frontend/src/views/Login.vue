@@ -73,7 +73,7 @@ export default {
             let data = res.data
             if (data.code === 200) {
               // 登录成功
-              store.commit('login', {username: form.email, token: data.token})
+              store.commit('login', {username: form.email, token: data.data.token})
               ElMessage.success("Logged In")
               router.replace({name: 'UserCenter'})
             }
