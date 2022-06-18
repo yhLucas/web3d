@@ -19,7 +19,7 @@ class Game{
 		this.scene;
 		this.renderer;
 		this.animations = {};
-		this.assetsPath = '../assets/';
+		this.assetsPath = '/assets/';
 		
 		this.remotePlayers = [];
 		this.remoteColliders = [];
@@ -544,7 +544,7 @@ class PlayerLocal extends Player{
 		super(game, model);
 		
 		const player = this;
-		const socket = io.connect("http://127.0.0.1:8887");
+		const socket = io.connect("http://127.0.0.1:3000");
 		socket.on('setId', function(data){
 			player.id = data.id;
 		});
