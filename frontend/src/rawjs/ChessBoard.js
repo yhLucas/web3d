@@ -1,6 +1,3 @@
-import * as THREE from "three";
-import {Color} from "three";
-
 const NUMBER = 8
 const WIDTH = 2
 

@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-console.log(express.static('../town_scene'));
 
 app.use(express.static('../town_scene/'));
 app.get('/',function(req, res) {
@@ -45,6 +44,12 @@ io.sockets.on('connection', function(socket){
 		console.log(`chat message:${data.id} ${data.message}`);
 		io.to(data.id).emit('chat message', { id: socket.id, message: data.message });
 	})
+
+	socket.on('game-interact', (args) => {
+        console.log(args.position)
+        socket.emit('game-interact', args);
+    })
+
 });
 
 http.listen(3000, function(){
