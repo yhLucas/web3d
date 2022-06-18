@@ -5,10 +5,7 @@ import com.company.project.model.Stat;
 import com.company.project.service.StatService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,6 +20,7 @@ public class StatController {
     private StatService statService;
 
     //  第一次进入场景
+    //  TODO 此接口作废，请删除，由record创建间接生成stat
     @PostMapping("/add")
     public Result add(@RequestParam Integer token,
                       @RequestParam String scene) {
@@ -31,7 +29,7 @@ public class StatController {
     }
 
     //  第一次通关
-    @PostMapping("/update")
+    @PostMapping("/")
     public Result update(@RequestParam Integer token,
                          @RequestParam String scene) {
         statService.update(token, scene);
@@ -39,7 +37,7 @@ public class StatController {
     }
 
     //  查询过关率
-    @PostMapping("/list")
+    @GetMapping("/list")
     public Result list(@RequestParam String scene) {
         return ResultGenerator.genSuccessResult(statService.list(scene));
     }

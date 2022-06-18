@@ -5,10 +5,7 @@ import com.company.project.model.Record;
 import com.company.project.service.RecordService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -24,7 +21,7 @@ public class RecordController {
     private RecordService recordService;
 
     //  进入游戏
-    @PostMapping("/add")
+    @PostMapping("/")
     public Result add(@RequestParam Integer token,
                       @RequestParam String scene) {
         recordService.save(token, scene);
@@ -32,7 +29,7 @@ public class RecordController {
     }
 
     //  查询总游玩次数
-    @PostMapping("/list")
+    @GetMapping("/all")
     public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
         List<Record> list = recordService.findAll();
