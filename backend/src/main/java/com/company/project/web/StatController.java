@@ -37,7 +37,7 @@ public class StatController {
     }
 
     //  查询过关率
-    @GetMapping("/list")
+    @GetMapping("/all")
     public Result list(@RequestParam String scene) {
         return ResultGenerator.genSuccessResult(statService.list(scene));
     }
