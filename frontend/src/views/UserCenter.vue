@@ -37,7 +37,6 @@
                 <h1 class="font-big">VirtualScenes</h1>
               </template>
               <el-card style="width: 460px">
-                }
                 <img
                     src="https://www.researchgate.net/profile/Curtis-Bright/publication/333815714/figure/fig1/AS:770619155156992@1560741332335/A-visual-representation-of-a-solution-for-the-8-queens-problem-left-and-the-variables.png">
                 <div style="padding: 14px">
