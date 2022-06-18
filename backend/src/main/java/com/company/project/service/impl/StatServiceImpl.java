@@ -26,8 +26,11 @@ public class StatServiceImpl extends AbstractService<Stat> implements StatServic
     @Override
     public Result save(Integer token, String scene){
         User user = UserServiceImpl.getUser(token);
-        Stat stat = new Stat(user.getUserId(), scene);
-        statMapper.insert(stat);
+        //  如果不存在通关状态则添加
+        if (statMapper.selectByUidAndScene(user.getUserId(), scene) == null) {
+            Stat stat = new Stat(user.getUserId(), scene);
+            statMapper.insert(stat);
+        }
         return ResultGenerator.genSuccessResult();
     }
 
@@ -36,13 +39,8 @@ public class StatServiceImpl extends AbstractService<Stat> implements StatServic
         User user = UserServiceImpl.getUser(token);
         //  获取对应的Stat
         int uid = user.getUserId();
-        Stat stat = statMapper.selectByUidAndScene(user.getUserId(), scene);
-        statMapper.delete(stat);
-        Stat newStat = new Stat();
-        newStat.setPass(true);
-        newStat.setScene(scene);
-        newStat.setUserId(uid);
-        statMapper.insert(newStat);
+        Stat stat = statMapper.selectByUidAndScene(uid, scene);
+        statMapper.updateById(stat.getStatId());
         return ResultGenerator.genSuccessResult();
     }
 
