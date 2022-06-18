@@ -18,6 +18,7 @@ public class Log {
     public Log(){
 
     }
+
     public Log(Integer userId,String scene){
         this.userId = userId;
         this.scene = scene;
